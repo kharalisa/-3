@@ -73,18 +73,20 @@ def swap_symmetric(matrix, size):
 
 # Функция несимметричного обмена по порядку между областями 2 и 3
 def swap_non_symmetric(matrix, size):
-    top_coords, bottom_coords = [], []  # Списки координат
+    top_coords, bottom_coords = [], []
     for i in range(size):
         for j in range(size):
             if i < j and i + j < size - 1:
-                top_coords.append((i, j))  # Координаты области 2
+                top_coords.append((i, j))
             elif i > j and i + j > size - 1:
-                bottom_coords.append((i, j))  # Координаты области 3
-    # Обмен значениями по парам координат
-    for idx in range(min(len(top_coords), len(bottom_coords))):
-        i1, j1 = top_coords[idx]
-        i3, j3 = bottom_coords[idx]
-        matrix[i1][j1], matrix[i3][j3] = matrix[i3][j3], matrix[i1][j1]
+                bottom_coords.append((i, j))
+    # Сортируем координаты по порядку прохода
+    top_coords.sort()  # слева направо, сверху вниз
+    bottom_coords.sort(reverse=True)  # справа налево, снизу вверх
+
+    for (i2, j2), (i3, j3) in zip(top_coords, bottom_coords):
+        matrix[i2][j2], matrix[i3][j3] = matrix[i3][j3], matrix[i2][j2]
+
     return matrix
 
 # Функция транспонирования матрицы (поворот по диагонали)
